@@ -1,0 +1,509 @@
+<html>
+
+<head>
+	<link type="text/css" rel="stylesheet" href="/style-guide/css/fluig-style-guide.min.css" />
+	<link type="text/css" rel="stylesheet" href="css/custom.css" />
+	<link type="text/css" rel="stylesheet" href="css/xplanning-compraDigital.css" />
+	<link type="text/css" rel="stylesheet" href="css/xp_validator.css" />
+	<!-- Style Guide -->
+	<script type="text/javascript" src="/portal/resources/js/jquery/jquery.js"></script>
+	<script type="text/javascript" src="/portal/resources/js/jquery/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/portal/resources/js/mustache/mustache-min.js"></script>
+	<script type="text/javascript" src="/style-guide/js/fluig-style-guide.min.js" charset="utf-8"></script>
+	<script type="text/javascript" src="/webdesk/vcXMLRPC.js"></script>
+
+
+	<script src="jquery.mask.min.js"></script>
+	<script ype="text/javascript" src="js/xp_utils.js"></script>
+	<script ype="text/javascript" src="js/activity.js"></script>
+	<script ype="text/javascript" src="js/activityView.js"></script>
+	<script ype="text/javascript" src="js/xp_attach.js"></script>
+	<script ype="text/javascript" src="js/xp_validator.js"></script>
+	<script ype="text/javascript" src="js/custom.js"></script>
+
+</head>
+
+<body>
+	<div class="fluig-style-guide" id="process-content">
+
+		<form class="fs-no-margin-bottom" name="form" role="form">
+
+			<!-- CAMPOS CONTROLES HIDDEN -->
+			<input type="hidden" name="solicitanteCode" id="solicitanteCode" />
+			<input type="hidden" name="atividadeAnterior" id="atividadeAnterior" />
+			<input type="hidden" name="atividadeCorrente" id="atividadeCorrente" />
+
+
+
+			<div class="page-header header-xplanning">
+				<div class="row">
+					<div class="col-md-2 col-xs-12" style="text-align: center">
+						<img src="midia/logo_image.png" height="60" style="max-width: 170px" alt="logo"></img>
+					</div>
+
+					<div class="col-md-7 col-xs-12"
+						style="border-left: solid; border-width: 0.5; border-color: #ccc; text-align: center">
+						<h3 style="margin-top: 20px">Compras Digital - Recebimento de Notas de Produtos</h3>
+					</div>
+					<!-- PANEL SOLICITANTE E SOLICITAÇÃO -->
+					<div class="col-md-3 col-xs-12" style="padding: 0px; padding-right: 15px">
+						<div class="row"
+							style="text-align: center; margin-top: -10px; font-size: 10px !important; height: 22px !important; font-weight: bold; color: #35729d">
+							Solicitante
+						</div>
+						<div class="row" style="text-align: center">
+							<div class="col-md-9 col-xs-6">
+								<div class="row" style="margin-top: -10px">
+									<input type="text" class="form-control titleSolicitante" id="solicitanteNome"
+										name="solicitanteNome" readonly />
+								</div>
+								<div class="row" style="margin-top: -5px">
+									<i class="fluigicon fluigicon-brand fluigicon-xs" title="Nº Solicitação"></i>
+									<strong><input type="text" class="customSolicitante" name="numeroSolicitacao"
+											id="numeroSolicitacao" value="Nº Solicitação" readonly /></strong>
+								</div>
+								<div class="row" style="margin-top: -5px">
+									<i class="fluigicon fluigicon-calendar fluigicon-xs"
+										title="Data da Solicitação"></i>
+									<input type="text" class="customSolicitante" id="dataSolicitacao"
+										name="dataSolicitacao" readonly />
+								</div>
+								<div class="row" style="margin-top: -5px">
+									<i class="fluigicon fluigicon-envelope fluigicon-xs"></i>
+									<input type="text" class="customSolicitante" id="solicitanteEmail"
+										name="solicitanteEmail" readonly />
+								</div>
+							</div>
+							<div class="col-md-3 col-xs-6" style="text-align: center; margin-top: -5px; padding: 0px">
+								<img id="imgSolicitante" class="avatar" src="" title="Solicitante">
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="container-fluid">
+				<!-- BREADCRUMBS TASK -->
+				<div class="row" style="margin-bottom: 2% !important;">
+					<div class="breadcrumbs-xp">
+						<div class="breadcrumb-item-xp" id="inicio_task">
+							<span class="label-bread">Início</span>
+						</div>
+						<div class="breadcrumb-item-xp" id="receberNotaFiscal_task">
+							<span class="label-bread">Receber Nota Fiscal</span>
+						</div>
+						<div class="breadcrumb-item-xp" id="classificacaoFiscal_task">
+							<span class="label-bread">Classificação Fiscal</span>
+						</div>
+						<div class="breadcrumb-item-xp" id="informacoesComplementares_task">
+							<span class="label-bread">Informações Complementares</span>
+						</div>
+						<div class="breadcrumb-item-xp">
+							<span class="label-bread">Fim</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- PANELS -->
+				<div class="row">
+					<div class="panel-group fs-no-margin-bottom">
+						<!-- NOTAS -->
+						<div class="panel customPanel" id="dadosEmpresa">
+							<div class="panel-heading">
+								<h4 class="panel-title titulo-panel">
+									<a class="collapse-icon up" data-toggle="collapse" href="#dadosNotas">
+										<span class="fluigicon fluigicon-files fluigicon-md"></span>
+										Dados da Notas Fiscal
+									</a>
+								</h4>
+							</div>
+							<div id="dadosNotas" class="panel-collapse collapse in">
+								<div class="panel-body fs-md-padding-bottom">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="form-group">
+												<label class="control-label required" for="zoomEmpresa" atividades="0,4">Empresa</label>
+												<input type="zoom" class="form-control" id="zoomEmpresa" name="zoomEmpresa"
+													placeholder="Selecione a Empresa" data-zoom="{
+																'displayKey': 'CAMPO_ZOOM',
+																'datasetId': 'ds_cdig_empresa',
+																'filterValues': '',
+																'fields': [
+																   {
+																	   'field': 'CODIGO',
+																	   'label': 'Código',	
+																	   'standard': 'true',					       
+																	   'search': 'true'
+																	},
+																   {
+																	   'field': 'NOME',
+																	   'label': 'Empresa',	
+																	   'standard': 'true',					       
+																	   'search': 'true'
+																	}
+																 ]
+													 }" value="" />
+												<input type="hidden" id="codEmpresaProtheus" name="codEmpresaProtheus" value="" />
+											</div>
+										</div>
+										<div class="col-md-4">
+											<div class="form-group">
+												<label class="control-label">Recebedor</label>
+												<input type="text" class="form-control" id="nomeRecebedor" name="nomeRecebedor" value=""
+													readonly />
+											</div>
+										</div>
+										<div class="col-md-4">
+											<div class="form-group">
+												<label class="control-label required" for="zoomLocalRecebimento" atividades="0,4,18,43">Local do
+													recebimento</label>
+												<input type="hidden" id="codigoLocalRecebimento" name="codigoLocalRecebimento" value="" />
+												<input type="zoom" class="form-control" id="zoomLocalRecebimento" 
+												name="zoomLocalRecebimento"	data-zoom="{
+														'displayKey': 'DESCRICAO',
+														'datasetId': 'dsConsultarLocalRecebimento',
+														'filterValues': '',
+														'fields':[
+														   {
+															   'field': 'DESCRICAO',
+															   'label': 'Local',	
+															   'standard': 'true',					       
+															   'search': 'true'
+															}
+														 ]
+												}" value="" />
+											</div>
+										</div>
+										<div class="col-md-2">
+											<div class="form-group">
+												<label class="control-label">Data</label>
+												<div class="input-group">
+													<input type="text" class="form-control" id="dataRecebimento" name="dataRecebimento"
+														readonly />
+													<span class="input-group-addon">
+														<span class="fluigicon fluigicon-calendar"></span>
+													</span>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-2">
+											<div class="form-group">
+												<label class="control-label">Hora</label>
+												<div class="input-group">
+													<input type="text" class="form-control" id="horaRecebimento" name="horaRecebimento"
+														mask="99:99" readonly />
+													<span class="input-group-addon">
+														<span class="fluigicon fluigicon-time"></span>
+													</span>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<!--CAMPO ZOOM-->
+												<label class="control-label required" for="cnpj" atividades="0,4,18,43">CNPJ</label>
+												<input type="hidden" id="fornecedorCodigo" name="fornecedorCodigo" value="" />
+												<input type="hidden" id="fornecedorLoja" name="fornecedorLoja" value="" />
+												<input type="text" class="form-control" id="cnpj" name="cnpj" value="" />
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label class="control-label">Razão Social</label>
+												<input type="text" class="form-control" id="razaoSocial" name="razaoSocial" readonly />
+											</div>
+										</div>
+										<div class="col-md-3">
+											<div class="form-group">
+												<label class="control-label required" for="zoomNota" atividades="0,4,18,43">
+													Nota Fiscal
+												</label>
+												<input type="hidden" id="numeroNota" name="numeroNota" value="" />
+												<input type="zoom" class="form-control" id="zoomNota" name="zoomNota" data-zoom="{
+														'displayKey': 'NOTA',
+														'datasetId': 'dsConsultarNFsFornec',
+														'filterValues': '',
+														'fields':[
+														    {
+														       'field': 'NOTA',
+														       'label': 'Nota',	
+														       'standard': 'true',					       
+														       'search': 'true'
+														    },
+														    {
+														       'field': 'SERIE',
+														       'label': 'Série'
+														    },
+														    {
+														       'field': 'EMISSAO',
+														       'label': 'Emissão'
+														    }
+														 ]
+												}" value="" />
+											</div>
+										</div>
+										<div class="col-md-1">
+											<div class="form-group">
+												<label class="control-label">Série</label>
+												<input type="text" class="form-control" id="serieNota" name="serieNota"
+													readonly />
+											</div>
+										</div>
+										<div class="col-md-2">
+											<div class="form-group">
+												<label class="control-label">Emissão</label>
+												<div class="input-group">
+													<input type="text" class="form-control" id="emissaoNota" name="emissaoNota"
+														readonly />
+													<span class="input-group-addon">
+														<span class="fluigicon fluigicon-calendar"></span>
+													</span>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-2">
+											<div class="form-group">
+												<label class="control-label">Valor Nota</label>
+												<div class="input-group">
+													<span class="input-group-addon">
+														R$
+													</span>
+													<input type="text" class="form-control" id="valorNotaNFFmt"
+														name="valorNotaNFFmt" readonly />
+												</div>
+											</div>
+										</div>
+										<div class="col-md-4">
+											<div class="form-group">
+												<label class="control-label">Chave</label>
+												<input type="text" class="form-control" id="chaveNota" name="chaveNota"
+													readonly />
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-3 col-md-offset-4">
+											<div class="form-group">
+												<label class="control-label required" for="tipoIntegracao"
+													atividades="0,4,18,43">Tipo de Integração</label>
+												<select class="form-control" id="tipoIntegracao" name="tipoIntegracao"
+													onchange="alterouTipoIntegracao()">
+													<option value="Nota">Nota</option>
+													<option value="PreNota">Pré-Nota</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+
+						<!--Classificação Fiscal -->
+
+						<div class="panel customPanel" id="section-classificacaoFiscal">
+							<div class="panel-heading">
+								<h4 class="panel-title titulo-panel">
+									<a class="collapse-icon up" data-toggle="collapse" href="#classificacaoFiscal">
+										<span class="flaticon flaticon-invoices-check icon-md"></span>
+										Classificação Fiscal
+									</a>
+								</h4>
+							</div>
+							<div id="classificacaoFiscal"" class=" panel-collapse collapse in">
+								<div class="panel-body fs-md-padding-bottom">
+									<div class="row">
+										<div class="col-md-8 col-md-offset-3">
+											<div class="btn-group" data-toggle="buttons">
+												<label for="informacaoComplementar" class="btn btn-default labelInform">
+													<input type="radio" name="informacaoComplementar" id="classificacaoFiscal" value="classificacaoFiscal" onchange="informationCompleter(this)">
+													Classificação Fiscal
+												</label>
+												
+												<label for="informacaoComplementar" class="btn btn-default labelInform">
+													<input type="radio" name="informacaoComplementar" id="cancelarSolicitacao" value="cancelarSolicitacao" onchange="informationCompleter(this)">
+													Cancelar Solicitação
+												</label>
+												
+												<label for="informacaoComplementar" class="btn btn-default labelInform">
+													<input type="radio" name="informacaoComplementar" id="notificacaoFornecedor" value="notificacaoFornecedor" onchange="informationCompleter(this)">
+													Notificação Ajuste Fornecedor
+												</label>	
+											</div>
+										</div>
+									</div>
+									<div class="row" id="section-classificacaoFiscal">
+										<div class="col-md-12">
+											<div class="form-group">
+												<label class="control-label required_false">Natureza</label>
+												<input type="hidden" id="codigoNatureza" name="codigoNatureza"
+													value="" />
+												<input type="zoom" class="form-control" id="zoomNatureza"
+													name="zoomNatureza" data-zoom="{
+														'displayKey':'DESCRICAO',
+														'datasetId':'dsCONPRONATFIN',
+														'filterValues':',',
+														'fields':[
+														   {
+															   'field':'DESCRICAO',
+															   'label':'DescriÃ§Ã£o',	
+															   'standard' : 'true',					       
+															   'search':'true'
+															}
+														 ]
+													}" value="" />
+											</div>
+										</div>
+									</div>
+									<div class="row hide" id="section-notificarFornecedor">
+										<div class="form-group col-md-12">
+											<label for="notificacaoFornecedor">Nofitificação Fornecedor</label>
+											<div class="input-group">
+												<span class="input-group-addon">
+													<span class="fluigicon fluigicon-envelopes icon-sm" data-toggle="tooltip" data-placement="top" title="Descreva observações de ajustes para fornecedor">
+													</span>
+												</span>
+												<textarea name="nofificacaoFornecedor" id="nofificacaoFornecedor" " rows="5" cols="150" />
+												</textarea>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+
+						<!-- Pedidos -->
+
+						<div class="panel customPanel" id="section-pedidos">
+							<div class="panel-heading">
+								<h4 class="panel-title titulo-panel">
+									<a class="collapse-icon up" data-toggle="collapse" href="#pedidos">
+										<span class="flaticon flaticon-file-check icon-md"></span>
+										Pedidos
+									</a>
+								</h4>
+							</div>
+							<div id="pedidos" class="panel-collapse collapse in">
+								<div class="panel-body fs-md-padding-bottom">
+									<div class="row">
+										<div class="col-md-12 table-responsive">
+											<table class="table" tablename="tabelaPedidos" id="tabelaPedidos" noaddbutton="true" nodeletebutton="false" customFnDelete="removerPedido(this)">
+												<thead>
+													<tr><td></td></tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>
+															<div class="row">
+																<!-- <div class="col-md-2">
+																	<span class="fluigicon fluigicon-trash icon-md fs-cursor-pointer remover-pedido fs-xl-margin-top"
+																			id="ipRemoverPedido" name="ipRemoverPedido"
+																			onclick="removerPedido(this)">
+																	</span>
+																</div> -->
+																<div class="col-md-4">
+																	<div class="form-group">
+																		<label class="control-label">Pedido</label>
+																		<input type="zoom" class="form-control"
+																				id="ipZoomPedido" name="ipZoomPedido"
+																				data-zoom="{
+																					    'displayKey': 'PEDIDO',
+																					    'datasetId': 'dsConsultarPedidosFornec',
+																					    'filterValues': '',
+																					    'fields':[
+																					       {
+																						       'field': 'PEDIDO',
+																						       'label': 'Pedido',	
+																						       'standard': 'true',					       
+																						       'search': 'true'
+																					        },{
+																					        	'field': 'VALOR_TOTAL',
+																					        	'label': 'Total'
+																					        }
+																					     ]
+																			       }" value="" />
+																		<input type="hidden" id="ipPedido"
+																				   name="ipPedido" value="" />
+																	</div>
+																</div>
+																<div class="col-md-4">
+																	<div class="form-group">
+																		<label class="control-label">Total</label>
+																		<input type="hidden" id="ipValorTotal"
+																			name="ipValorTotal" value="" />
+																		<input type="text" class="form-control"
+																			id="ipValorTotalFmt"
+																			name="ipValorTotalFmt" readonly
+																			style="font-weight:bold;" />
+																	</div>
+																</div>
+															</div>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-4">
+											<input type="button" class="btn btn-primary btn-custom"
+												id="btnAddPedido" onclick="adicionarPedido()"
+												value="Adicionar Pedido(+)" />
+										</div>
+									</div>
+									<!-- ITEMS PEDIDOS -->
+
+								</div>
+							</div>
+						</div>
+
+
+
+						<!-- Integrações -->
+
+						<div class="panel customPanel" id="integracaoSistema">
+							<div class="panel-heading">
+								<h4 class="panel-title titulo-panel">
+									<a class="collapse-icon up" data-toggle="collapse" href="#integracao">
+										<span class="flaticon flaticon-system-tools icon-sm" aria-hidden="true"></span>
+										Integrações
+									</a>
+								</h4>
+							</div>
+							<div id="integracao" class="panel-collapse collapse">
+								<div class="panel-body fs-md-padding-bottom">
+									<div' class="row">
+										<div class="col-md-12">
+											<div class="form-group">
+												<label class="control-label fs-sm-margin-bottom">Status</label>
+												<select class="form-control" id="statusIntegracao"
+													name="statusIntegracao">
+													<option value="ok">Ok</option>
+													<option value="error">Error</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-md-12">
+											<div class="form-group">
+												<label class="control-label fs-sm-margin-bottom">Erro Mensagem</label>
+												<input type="text" class="form-control input-sm" id="erroMgsIntegracao"
+													name="erroMgsIntegracao" />
+											</div>
+										</div>
+								</div>
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+			<footer id="process-footer"></footer>
+		</form>
+	</div>
+</body>
+
+</html>

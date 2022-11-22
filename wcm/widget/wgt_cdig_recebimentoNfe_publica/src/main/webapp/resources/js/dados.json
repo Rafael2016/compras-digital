@@ -1,0 +1,50 @@
+
+  { 
+    "razaoSocial": "Grupo Tabajara",
+    "CNPJFornecedor": "45.312.522/0003-70",
+    "emailFornecedor": "Tabajara@gmailcom",
+    "comprador": "Rafael Luz",
+    "emailComprador": "teste@gmailcom",
+    "uf": "RJ",
+    "cidade": "Rio de Janeiro",
+    "telefone": "313131313113",
+    "endereco": "Rua teste Nº281",
+    "cotacao" :12453,
+    "pedido":323232,
+    "empresa":"XPLANNING TECNOLOGIA",
+    "CNPJEmpresa":"45.312.522/0001-67",
+    "itensNota": [
+    {
+            "item": "001",
+            "produto": "C987878",
+            "descricao": "Caneta",
+            "quantidade": 12,
+            "valorUnit": 5.5,
+            "valorTotal": 66,
+            "dataEntrega": "12/02/2022"
+    },
+    {
+            "item": "002",
+            "produto": "C987878",
+            "descricao": "Lápis",
+            "quantidade": 30,
+            "valorUnit": 1.70,
+            "valorTotal": 120,
+            "dataEntrega": "12/02/2022"
+    }
+],
+    "condicaoPgto": 2,
+    "formaPgto": "credito",
+    "dataEmisao": "01/02/2022",
+    "dataVencimento": "01/02/2022",
+    "desconto":32,
+    "moeda": "Real",
+    "imposto": [
+    {
+        "ICMS": 1,
+        "IPI":  3,
+        "IRRF": 3
+    }
+],
+    "observacao": "Solicitação de teste"
+}

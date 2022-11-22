@@ -1,0 +1,17 @@
+application.type=layout
+application.code=layout_pagina_publica
+application.title=Layout Página Pública 
+application.description=Layout Página Pública 
+application.category=SYSTEM
+application.renderer=freemarker
+developer.code=DESKTOP-NRIR1PL
+developer.name=User
+developer.url=http://www.fluig.com
+layout.defaultSlot=SlotA
+layout.file=layout.ftl
+locale.file.base.name=layout_pagina_publica
+slot.SlotGlobalAlert=alertpopover
+slot.SlotInstantSearch=suggestsearch
+slot.SlotLogin=sociallogin
+slot.SlotMenu=menu
+slot.SlotUsePolicy=usepolicy

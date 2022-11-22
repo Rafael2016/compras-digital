@@ -1,0 +1,391 @@
+<html>
+<head>
+	<link type="text/css" rel="stylesheet" href="/style-guide/css/fluig-style-guide.min.css"/>
+	<script type="text/javascript" src="/portal/resources/js/jquery/jquery.js"></script>
+	<script type="text/javascript" src="/portal/resources/js/jquery/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/portal/resources/js/mustache/mustache-min.js"></script>
+	<script type="text/javascript" src="/style-guide/js/fluig-style-guide.min.js" charset="utf-8"></script>
+	
+	<script src="/webdesk/vcXMLRPC.js"></script>
+	
+	<link type="text/css" rel="stylesheet" href="custom.css"/>
+	<link rel="stylesheet" href="xp.validator.css"/>
+	<link rel="stylesheet" href="xplanning.css"/>
+	
+	<script type="text/javascript" src="script.js" charset="utf-8"></script>
+	<script type="text/javascript" src="xp_utils.js" charset="utf-8"></script>
+	<script type="text/javascript" src="atividades.js" charset="utf-8"></script>
+	<script type="text/javascript" src="xp.validator.js" charset="utf-8"></script>	
+	<script type="text/javascript" src="xp.validatorExt.js" charset="utf-8"></script>
+	<script src="//cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
+	
+</head>
+<body>
+
+<div class="fluig-style-guide">
+
+	<form name="form" role="form">
+			
+			<!-- [Inicio] campos de controle -->
+			<input type="hidden" id="dataAtividade" name="dataAtividade" value="" />
+			<input type="hidden" id="codSituacao" name="codSituacao" value="" />
+			<input type="hidden" id="situacao" name="situacao" value="" />
+			<input type="hidden" id="campoDescritor" name="campoDescritor" value="" />
+			<input type="hidden" id="solicitanteMatricula" name="solicitanteMatricula" value="" />
+			<!-- [Fim] campos de controle -->	
+			
+			<input type="hidden" id="matriculaAprovadorAtual" name="matriculaAprovadorAtual" value="" />
+			<input type="hidden" id="status" name="status" value="" />			
+
+			<input type="hidden" id="cod_empresa" name="cod_empresa" value="" />
+			<input type="hidden" id="nom_empresa" name="nom_empresa" value="" />
+			<input type="hidden" id="email_comprador" name="email_comprador" value="" />
+			
+			<input type="hidden" id="cod_condicao_pagamento" name="cod_condicao_pagamento" value="" />
+	    	<input type="hidden" id="dsc_condicao_pagamento" name="dsc_condicao_pagamento" value="" />
+	    	<input type="hidden" id="cod_frete" name="cod_frete" value="" />
+	    	<input type="hidden" id="cod_moeda" name="cod_moeda" value="" />
+	    	<input type="hidden" id="dsc_moeda" name="dsc_moeda" value="" />
+			
+			<input type="hidden" id="strJsonTabelaAprovacao" name="strJsonTabelaAprovacao" value="" />
+
+			
+			<div class="page-header header-xplanning">
+				<div class="row">
+					<div class="col-md-2 col-xs-12" style="text-align: center">
+						<img src="logo_image.png" height="60" style="max-width: 170px" alt="logo"></img>
+					</div>
+					
+					<div class="col-md-7 col-xs-12" style="border-left: solid; border-width: 0.5; border-color: #ccc; text-align: center">
+						<h3 style="margin-top: 20px">Compras Digital - Aprovação de Pedido de Compras</h3>
+					</div>
+					
+					<div class="col-md-3 col-xs-12" style="padding: 0px; padding-right: 15px">
+						 <div class="row" style="text-align: center; margin-top: -10px; font-size: 10px !important; height: 22px !important; font-weight: bold; color: #35729d">
+								COMPRADOR
+						 </div>
+								 
+						 <div class="row" style="text-align: center">
+								 <div class="col-md-9 col-xs-6">
+									<div class="row" style="margin-top: -10px">
+									 	<input type="text" class="form-control titleSolicitante" id="solicitanteNome" name="solicitanteNome" readonly />
+									</div>
+									<div class="row" style="margin-top: -5px">
+										<i class="fluigicon fluigicon-brand fluigicon-xs" title="Nº Solicitação"></i>
+										<strong><input type="text" class="customSolicitante" name="numeroSolicitacao" id="numeroSolicitacao" value="Nº Solicitação" readonly/></strong>
+									</div>
+									<div class="row" style="margin-top: -5px">
+										<i class="fluigicon fluigicon-calendar fluigicon-xs" title="Data da Solicitação"></i>
+										<input type="text" class="customSolicitante" id="dataSolicitacao" name="dataSolicitacao" readonly/>
+									</div>
+									<div class="row" style="margin-top: -5px">
+										<i class="fluigicon fluigicon-envelope fluigicon-xs"></i>
+										<input type="text" class="customSolicitante" id="solicitanteEmail" name="solicitanteEmail" readonly />
+									</div>
+								 </div>
+								 <div class="col-md-3 col-xs-6" style="text-align: center; margin-top: -5px; padding: 0px">
+									 <img id="imgSolicitante" class="avatar" src="" title="Solicitante">
+								 </div>
+							</div>
+							
+					</div>
+				</div>
+			</div>
+			
+			<div class="panel-group" id="accordion">
+				<div class="panel customPanel">
+			        <div class="panel-heading titulo-panel">
+			            <h4 class="panel-title">
+			                <a class="collapse-icon labelPanelTitle" data-toggle="collapse" data-parent="#accordion" href="#collapseDadosSolicitacao">
+			                	<span class="fluigicon fluigicon-sticky-note fluigicon-sm" style="background-color: #fff"></span>&nbsp;Dados do Pedido de Compra do Protheus
+			                </a>
+			            </h4>
+			        </div>
+			        <div id="collapseDadosSolicitacao" class="panel-collapse collapse">
+			            <div class="panel-body">
+			            	<div class="row">
+							    <div class="col-md-2">
+						    		<dl>
+									    <dt>PC Protheus</dt>
+									    <dd><strong>
+									    		<label id="lblNumero" style="color: #ea8b1d">[value]</label>
+									    	</strong>
+									    	<input type="hidden" id="num_pedido_compra" name="num_pedido_compra" value="" />
+									    </dd>
+									</dl>
+						    	</div>
+						    	<div class="col-md-3">
+						    		<dl>
+									    <dt>Filial</dt>
+									    <dd>
+									    	<label id="lblFilial">[value]</label>
+									    	<input type="hidden" id="cod_filial" name="cod_filial" value="" />
+											<input type="hidden" id="nom_filial" name="nom_filial" value="" />
+									    </dd>
+									</dl>
+						    	</div>
+						    	
+						    	<div class="col-md-2">
+						    		<dl>
+									    <dt>Emissão</dt>
+									    <dd>
+									    	<label id="lblDataEmissaoProtheus">[value]</label>
+									    	<input type="hidden" id="dat_emissao" name="dat_emissao" value="" />
+									    </dd>
+									</dl>
+						    	</div>
+						    	
+						    	<div class="col-md-3">
+						    		<dl>
+									    <dt>Centro de Custo</dt>
+									    <dd>
+									    	<label id="lblCentroCusto">[value]</label>	
+									    	<input type="hidden" id="cod_centro_custo" name="cod_centro_custo" value="" />
+											<input type="hidden" id="dsc_centro_custo" name="dsc_centro_custo" value="" />
+									    </dd>
+									</dl>
+						    	</div>
+
+						    	<div class="col-md-2">
+						    		<dl>
+									    <dt>Fluig Cotação</dt>
+									    <dd>
+									    	<label id="lblSolicitacaoCotacao">[value]</label>	
+									    	<input type="hidden" id="numSolicitacaoCotacao" name="numSolicitacaoCotacao" value="" />
+									    </dd>
+									</dl>
+						    	</div>
+
+			            	</div>
+			            	
+			            	<div class="row">
+	 						    <div class="col-md-5">
+						    		<dl>
+									    <dt>Fornecedor</dt>
+									    <dd><strong>
+									    		<label id="lblFornecedor" style="color: #ea8b1d">[value]</label>
+									    	</strong>
+									    	<input type="hidden" id="cod_fornecedor" name="cod_fornecedor" value="" />
+									    	<input type="hidden" id="nom_fornecedor" name="nom_fornecedor" value="" />
+									    	<input type="hidden" id="cod_loja" name="cod_loja" value="" />
+									    	<input type="hidden" id="num_cgc" name="num_cgc" value="" />
+									    </dd>
+									</dl>
+						    	</div>
+						    	
+						    	<div class="col-md-4">
+						    		<dl>
+									    <dt>E-mail do Fornecedor</dt>
+									    <dd>
+									    	<label id="lblEmailFornecedor">[value]</label>
+									    	<input type="hidden" id="emailFornecedor" name="emailFornecedor" value="" />
+									    	
+									    </dd>
+									</dl>
+						    	</div>
+						    	
+	 						    <div class="col-md-3">
+						    		<dl>
+									    <dt>Contato do Fornecedor</dt>
+									    <dd>
+									    	<label id="lblNomeContato">[value]</label>
+									    	<input type="hidden" id="nom_contato" name="nom_contato" value="" />
+									    </dd>
+									</dl>
+						    	</div>
+			            	</div>
+			            	
+			            	<div class="row">
+						     	<div class="col-md-12">
+							    	<div class="table-responsive">
+										<div id="div_pedido_compra">
+										</div>
+								    </div>
+							     </div>
+			            	</div>
+			            </div>
+			        </div>
+		        </div>
+		        
+		        <div class="panel customPanel">
+			        <div class="panel-heading titulo-panel">
+			            <h4 class="panel-title">
+			                <a class="collapse-icon labelPanelTitle" data-toggle="collapse" data-parent="#accordion" href="#collapseMapaCotacao">
+			                	<span class="flaticon flaticon-widgets icon-sm"></span>&nbsp;Mapa de Cotação
+			                </a>
+			            </h4>
+			        </div>
+			        <div id="collapseMapaCotacao" class="panel-collapse collapse">
+			            <div class="panel-body">
+			            	<div class="row">
+			            		<div style="overflow-x:auto;">
+								    <table id="cotacaotable">
+								        <tr id="rowHeader"></tr>
+								        <tr id="rowSubheader"></tr>
+								    </table>
+									<br>
+								</div>
+			            	</div>
+			            </div>
+			        </div>
+			    </div>
+			    
+			    <div class="panel customPanel" id="divPainelAprovacao">
+			        <div class="panel-heading titulo-panel">
+			            <h4 class="panel-title">
+			                <a class="collapse-icon labelPanelTitle" data-toggle="collapse" data-parent="#accordion" href="#collapseAprovacao">
+			                	<span class="fluigicon fluigicon-enrollment-verified fluigicon-sm"></span>&nbsp;Aprovação
+			                </a>
+			            </h4>
+			        </div>
+			        <div id="collapseAprovacao" class="panel-collapse collapse">
+			            <div class="panel-body">
+			            	<div class="row">
+							    <div class="col-md-5">
+								    <br>
+							    	<div class="row">
+					          		 	<div class="col-lg-12 col-md-12 col-sm-12">
+								        	<div class="form-group">
+										    	<label class="control-label required" atividades="5" for="cmbAprovacao">Ação</label> 
+									   			<select class="form-control" name="cmbAprovacao" id="cmbAprovacao">
+									       			<option value="">---- Selecione ----</option>
+									      		 	<option value="A">Aprovar</option>
+							              		 	<option value="R">Reprovar</option>
+							          		 	</select>
+								        	</div>
+					          		 	</div>
+							    	</div>
+							    	<div class="row" id="div_motivo">
+					          		 	<div class="col-lg-12 col-md-12 col-sm-12">
+								        	<div class="form-group">
+									        	<label class="control-label" for="zoomMotivoReprovacao">Motivo</label>
+												<input type="hidden" id="motivoReprovacao" name="motivoReprovacao"/>
+												<input type="zoom" class="form-control" id="zoomMotivoReprovacao" name="zoomMotivoReprovacao"
+											       data-zoom="{
+														    'displayKey': 'DESCRICAO',
+														    'datasetId': 'dsMotivosReprovacao',
+														    'fields': [
+														       {
+															       'field': 'DESCRICAO',
+															       'label': 'Motivo',	
+															       'standard': 'true',					       
+															       'search': 'true'
+														        }
+														     ]
+											       }" value="" />
+											</div>
+							    		</div>
+						        	</div>
+							    </div>
+
+							    <div class="col-md-7 form-group">
+								    <br>
+									<label class="control-label" for="txt_comentario_aprovacao">Comentários</label>	
+									<textarea rows="5" cols="5" class="form-control" name="txt_comentario_aprovacao" id="txt_comentario_aprovacao"></textarea>
+								</div>
+						    </div>
+			            </div>
+			        </div>
+			     </div>
+			     
+			     <div class="panel customPanel">
+			        <div class="panel-heading titulo-panel">
+			            <h4 class="panel-title">
+			                <a class="collapse-icon labelPanelTitle" data-toggle="collapse" data-parent="#accordion" href="#collapseResumoAprovacao">
+			                	<span class="fluigicon fluigicon-process-decision fluigicon-sm"></span>&nbsp;Resumo das Aprovações
+			                </a>
+			            </h4>
+			        </div>
+			        <div id="collapseResumoAprovacao" class="panel-collapse collapse">
+			            <div class="panel-body">
+			            	<div class="row">
+							    <div class="panel-body fs-sm-space media clearfix" >
+							        <a class="pull-left" href="#">
+							            <div>
+							                <i class="fluigicon fluigicon-process-decision icon-thumbnail-xs"></i>
+							            </div>
+							        </a>
+							        <div class="media-body" id="divResumoAprovacao">
+							        </div>
+							    </div>
+						    </div>
+			            </div>
+			        </div>
+			     </div>
+		        
+			    <!-- Tabela Auxiliar Itens -->
+            	<table tablename="tabelaItensSC" id="tabelaItensSC" style="display: none;" noaddbutton="true" nodeletebutton="true">
+					<thead>
+						<tr>
+							<td></td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+								<input type="text" id="codItemSC" name="codItemSC" class="indiceItemSC">
+								<input type="text" id="dscItemSC" name="dscItemSC">
+								<input type="text" id="umItemSC" name="umItemSC">
+								<input type="text" id="qtdItemSC" name="qtdItemSC">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+	
+			    <!-- Tabela Auxiliar Cotação -->
+            	<table tablename="tabelaAuxCotacao" id="tabelaAuxCotacao" style="display: none;" noaddbutton="true" nodeletebutton="true">
+					<thead>
+						<tr>
+							<td></td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+								<input type="text" id="cnpjAux" name="cnpjAux" class="indiceCotacaoAux">
+								<input type="text" id="razaoSocialAux" name="razaoSocialAux">
+								<input type="text" id="indicePaiFilhoAux" name="indicePaiFilhoAux">
+								<input type="text" id="codProdutoAux" name="codProdutoAux">
+								<input type="text" id="dscProdutoAux" name="dscProdutoAux">
+								<input type="text" id="qtdAux" name="qtdAux">
+								<input type="text" id="unidadeMedidaAux" name="unidadeMedidaAux">
+								<input type="text" id="prazoAux" name="prazoAux">
+								<input type="text" id="prevEntregaAux" name="prevEntregaAux">
+								<input type="text" id="obsAux" name="obsAux">
+								<input type="text" id="valorUnitarioAux" name="valorUnitarioAux">
+								<input type="text" id="valorFreteAux" name="valorFreteAux">
+								<input type="text" id="valorDescontoAux" name="valorDescontoAux">
+								<input type="text" id="valorTotalAux" name="valorTotalAux">
+								<input type="text" id="propostaItemAux" name="propostaItemAux">
+								<input type="text" id="acaoItemAux" name="acaoItemAux">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				
+				<!-- Tabela Auxiliar Situação -->
+            	<table tablename="tabelaAuxSituacao" id="tabelaAuxSituacao" style="display: none" noaddbutton="true" nodeletebutton="true">
+					<thead class="fs-no-padding">
+						<tr>
+							<td></td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+								<input type="hidden" id="codSituacaoAux" name="codSituacaoAux">
+								<input type="hidden" id="situacaoAux" name="situacaoAux">
+								<input type="hidden" id="datSituacaoAux" name="datSituacaoAux">
+								<input type="hidden" id="obsSituacaoAux" name="obsSituacaoAux">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+						
+		    </div>
+			
+	</form>
+
+</div>
+</body>
+</html>

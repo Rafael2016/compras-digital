@@ -1,0 +1,785 @@
+<html>
+
+<head>
+	<link type="text/css" rel="stylesheet" href="/style-guide/css/fluig-style-guide.min.css" />
+	<link type="text/css" rel="stylesheet" href="css/form_cdig_solicitacao_compras.css" />
+	<link type="text/css" rel="stylesheet" href="css/xplanning-compraDigital.css" />
+	<link type="text/css" rel="stylesheet" href="css/xp_validator.css" />
+	<!-- Style Guide -->
+	<script type="text/javascript" src="/portal/resources/js/jquery/jquery.js"></script>
+	<script type="text/javascript" src="/portal/resources/js/jquery/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/portal/resources/js/mustache/mustache-min.js"></script>
+	<script type="text/javascript" src="/style-guide/js/fluig-style-guide.min.js" charset="utf-8"></script>
+	<script type="text/javascript" src="/webdesk/vcXMLRPC.js"></script>
+
+
+	<script src="jquery.mask.min.js"></script>
+	<script ype="text/javascript" src="js/activity.js"></script>
+	<script ype="text/javascript" src="js/activityView.js"></script>
+	<script ype="text/javascript" src="js/custom.js"></script>
+	<script ype="text/javascript" src="js/xp_attach.js"></script>
+	<script ype="text/javascript" src="js/xp_validator.js"></script>
+	<script ype="text/javascript" src="js/form_cdig_solicitacao_compras.js"></script>
+
+	<script type="text/javascript">
+		$(function() {								
+			$('label').css('font-size', '12px');
+		});
+	</script>
+</head>
+
+<body>
+	<div class="fluig-style-guide" id="process-content">
+
+		<form class="fs-no-margin-bottom" name="form" role="form">
+
+			<!-- CAMPOS CONTROLES HIDDEN -->
+			<input type="hidden" name="solicitanteCode" id="solicitanteCode" />
+			<input type="hidden" name="atividadeAnterior" id="atividadeAnterior" />
+			<input type="hidden" name="atividadeCorrente" id="atividadeCorrente" />
+			<input type="hidden" name="origemStart" id="origemStart" />
+			
+			<!-- Campos de controle para relatórios -->
+			<input type="hidden" id="situacao" name="situacao" />
+			<input type="hidden" id="dataCriacaoISO" name="dataCriacaoISO" />
+			<input type="hidden" id="dataFinalizacaoISO" name="dataFinalizacaoISO" />
+
+
+			<div class="page-header header-xplanning">
+				<div class="row">
+					<div class="col-md-2 col-xs-12" style="text-align: center">
+						<img src="midia/logo_image.png" height="60" style="max-width: 170px" alt="logo"></img>
+					</div>
+
+					<div class="col-md-7 col-xs-12"
+						style="border-left: solid; border-width: 0.5; border-color: #ccc; text-align: center">
+						<h3 style="margin-top: 20px">Compras Digital - Solicitação de Compras</h3>
+					</div>
+
+					<div class="col-md-3 col-xs-12" style="padding: 0px; padding-right: 15px">
+						<div class="row"
+							style="text-align: center; margin-top: -10px; font-size: 10px !important; height: 22px !important; font-weight: bold; color: #35729d">
+							Solicitante
+						</div>
+						<div class="row" style="text-align: center">
+							<div class="col-md-9 col-xs-6">
+								<div class="row" style="margin-top: -10px">
+									<input type="text" class="form-control titleSolicitante" id="solicitanteNome"
+										name="solicitanteNome" readonly />
+								</div>
+								<div class="row" style="margin-top: -5px">
+									<i class="fluigicon fluigicon-brand fluigicon-xs" title="Nº Solicitação"></i>
+									<strong><input type="text" class="customSolicitante" name="numeroSolicitacao"
+											id="numeroSolicitacao" value="Nº Solicitação" readonly /></strong>
+								</div>
+								<div class="row" style="margin-top: -5px">
+									<i class="fluigicon fluigicon-calendar fluigicon-xs"
+										title="Data da Solicitação"></i>
+									<input type="text" class="customSolicitante" id="dataSolicitacao"
+										name="dataSolicitacao" readonly />
+								</div>
+								<div class="row" style="margin-top: -5px">
+									<i class="fluigicon fluigicon-envelope fluigicon-xs"></i>
+									<input type="text" class="customSolicitante" id="solicitanteEmail"
+										name="solicitanteEmail" readonly />
+								</div>
+							</div>
+							<div class="col-md-3 col-xs-6" style="text-align: center; margin-top: -5px; padding: 0px">
+								<img id="imgSolicitante" class="avatar" src="" title="Solicitante">
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="container-fluid">
+
+				<div class="row" style="margin-bottom: 2% !important;">
+					<div class="breadcrumbs-xp">
+						<div class="breadcrumb-item-xp" id="inicio_task">
+							<span class="label-bread">Início</span>
+						</div>
+						<div class="breadcrumb-item-xp" id="aprovao_gestor_task">
+							<span class="label-bread">Aprovação de Compra</span>
+						</div>
+						<div class="breadcrumb-item-xp" id="ajuste_solicitacao_task">
+							<span class="label-bread">Ajuste Solicitação</span>
+						</div>
+						<div class="breadcrumb-item-xp">
+							<span class="label-bread">Fim</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- PANELS -->
+				<div class="row">
+					<div class="panel-group fs-no-margin-bottom">
+						
+						<!-- Dados Solicitação -->
+						<div class="panel customPanel" id="dadosSolicitacao">
+							<div class="panel-heading">
+								<h4 class="panel-title titulo-panel">
+									<a class="collapse-icon up labelPanelTitle" data-toggle="collapse" data-parent="#accordion"
+										href="#dados-solicitacao">
+										<span class="flaticon flaticon-tests-central icon-sm" aria-hidden="true"></span>
+										Dados da Solicitação
+									</a>
+								</h4>
+							</div>
+							<div id="dados-solicitacao" class="panel-collapse collapse in">
+								<div class="panel-body fs-md-padding-bottom">
+									<div class="row">
+										<div class="col-md-2">
+											<div class="row">
+												<div class="col-md-12">
+													<label class="control-label" for="tipoSolicitacao">
+														Tipo de Solicitação
+													</label>
+													<div class="radio">
+														<label>
+															<input name="tipoSolicitacao" id="material" value="material"
+																type="radio" onchange="showEscopo(this)">
+															<span class="">Material</span>
+														</label>
+													</div>
+													<div class="radio">
+														<label>
+															<input name="tipoSolicitacao" id="servico" value="servico"
+																type="radio" onchange="showEscopo(this)">
+															<span class="">Serviço</span>
+														</label>
+													</div>
+												</div>
+											</div>
+										</div>
+										
+										<div class="col-md-10">
+											<div class="row">
+												<div class="col-md-4">
+													<div class="form-group">
+														<label class="control-label required" for="zoomEmpresa"
+															atividades="0,4">Empresa</label>
+														<input type="zoom" class="form-control" id="zoomEmpresa"
+															name="zoomEmpresa" placeholder="Selecione a Empresa" data-zoom="{
+																		'displayKey': 'CAMPO_ZOOM',
+																		'datasetId': 'ds_cdig_empresa',
+																		'filterValues': '',
+																		'fields': [
+																		   {
+																			   'field': 'CODIGO',
+																			   'label': 'Código',	
+																			   'standard': 'true',					       
+																			   'search': 'true'
+																			},
+																		   {
+																			   'field': 'NOME',
+																			   'label': 'Empresa',	
+																			   'standard': 'true',					       
+																			   'search': 'true'
+																			}
+																		 ]
+															   }" value="" />
+														<input type="hidden" id="codEmpresaProtheus" name="codEmpresaProtheus"
+															value="" />
+													</div>
+												</div>
+												<div class="col-md-4">
+													<div class="form-group">
+														<label class="control-label required" for="zoomFilial">
+															Filial
+														</label>
+														<input type="zoom" class="form-control" id="zoomFilial"
+															name="zoomFilial" placeholder="Selecione a Filial" data-zoom="{
+																	'displayKey': 'CAMPO_ZOOM',
+																	'datasetId': 'ds_cdig_filial',
+																	'filterValues': '',
+																	'fields': [
+																	   {
+																		   'field': 'NOME',
+																		   'label': 'Filial',	
+																		   'standard': 'true',					       
+																		   'search': 'true'
+																		}
+																	 ]
+														   }" value="" />
+														<input type="hidden" id="codFilialProtheus" name="codFilialProtheus"
+															value="" />
+													</div>
+												</div>
+												<div class="col-md-4">
+													<div class="form-group">
+														<label class="control-label required" for="dataNecessidade">Data da	Necessidade</label>
+														<div class="input-group">
+															<input type="hidden" id="dataNecessidadeISO" name="dataNecessidadeISO" />
+															<input type="text" class="form-control" id="dataNecessidade" name="dataNecessidade" />
+															<span class="input-group-addon">
+													            <span class="fluigicon fluigicon-calendar"></span>
+													        </span>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<div class="row">
+												<div class="col-md-12">
+													<div class="form-group">
+														<label class="control-label" for="escopo">
+															Observação
+														</label>
+														<textarea class="form-control" name="observacao" id="observacao"
+															style="resize: none;" rows="3">
+														</textarea>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									<!-- Detalhamento de Escopo Tipo Serviços -->
+									<div class="row hide" id="section-escopo">
+										<div class="panel">
+											<div class="panel-heading">
+												<h5>
+													<span class="fluigicon fluigicon-fileedit icon-sm"
+														aria-hidden="true"></span>
+													Detalhamento de Escopo
+												</h5>
+											</div>
+											<div class="panel-body">
+												<div class="row">
+													<div class="col-md-12 table-responsive">
+														<table class="table fs-md-margin-bottom table-bordered"
+															tablename="tblEscopoSolicitacao" id="tblEscopoSolicitacao"
+															name="tblEscopoSolicitacao" noaddbutton="true"
+															nodeletebutton="true">
+															<thead class="fs-no-padding">
+																<tr style="border: 1px solid #dddddd;">
+																	<th></th>
+																	<th style="font-size: 11px; font-weight: bold;">Escopo da Solicitação</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr>
+																	<td class="fs-v-align-middle fs-text-center fs-no-padding col-md-1" style="width: 35px">
+																		<div class="lixeiraForn">
+																			<spam
+																				class="fluigicon fluigicon-trash icon-sm fs-xs-padding fs-cursor-pointer fs-color-danger"
+																				title="Remover"
+																				onclick="deletPaiFilho(this)">
+																			</spam>
+																		</div>
+																	</td>
+																	<td class="fs-no-padding">
+																		<div class="row" style="padding-left: 15px; padding-top: 15px; padding-right: 15px">
+																			<div class="col-md-12">
+																				<div class="form-group">
+																					<input type="text" class="form-control"
+																						name="escopo" id="escopo" />
+																				</div>
+																			</div>
+																		</div>
+																	</td>
+																</tr>
+															</tbody>
+															
+															<button class="btn" onclick="wdkAddChild('tblEscopoSolicitacao')">
+																<i class="fluigicon fluigicon-plus icon-xs" aria-hidden="true"></i>
+																Adicionar
+															</button>
+															<br>
+															<br>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<br>
+									
+									<div class="row">
+										<fieldset class="col-md-12" style="margin-bottom: 12px;">
+											<div class="col-md-12 titulo">
+												<span class="flaticon flaticon-add-pin icon-sm" aria-hidden="true" style="color: #35729d"></span>&nbsp;Adicionar Itens
+											</div>
+											
+											<br>
+											
+											<div class="panel panel-default">
+												<div class="panel-body">
+													<div class="col-md-4">
+														<div class="form-group">
+															<label class="control-label" for="zoomItens">&nbsp
+																&nbsp</label>
+															<input type="zoom" class="form-control" id="zoomItens"
+																name="zoomItens" data-zoom="{
+																			'displayKey': 'FIELD_ZOOM',
+																			'datasetId': 'ds_cdig_soliticao_compra_digital',
+																			'placeholder':'Escolha Item da Solicitação Compra',
+																			'filterValues': '',
+																			'fields': [
+																			   {'field': 'COD_ITEM', 'label': 'CÓD.ITEM', 'standard': 'true', 'search': 'true'},
+																			   {'field': 'ITEM', 'label': 'ITEM', 'standard': 'true', 'search': 'true'}
+																			 ]
+																   }" value="" />
+
+														</div>
+														<!-- CONTROLE TABLE PAI E FILHO HIDDEN -->
+														<input type="hidden" name="tmp_COD_ITEM" id="tmp_COD_ITEM">
+														<input type="hidden" name="tmp_ITEM" id="tmp_ITEM">
+														<input type="hidden" name="tmp_DESCRICAO" id="tmp_DESCRICAO">
+														<input type="hidden" name="tmp_UNIDADE_MEDIDA"
+															id="tmp_UNIDADE_MEDIDA">
+														<input type="hidden" name="tmp_ULTIMO_PRECO"
+															id="tmp_ULTIMO_PRECO">
+														<input type="hidden" name="tmp_DT_ULTIMA_COMPRA"
+															id="tmp_DT_ULTIMA_COMPRA">
+													</div>
+													<div class="col-md-2">
+														<div class="form-group">
+															<label class="control-label" for="qtdItem">&nbsp</label>
+															<div class="input-group">
+																<span class="input-group-addon" data-toggle="tooltip"
+																	data-placement="top" title="Quantidade Item">
+																	QTD
+																</span>
+																<input type="number" class="form-control" id="qtdItem"
+																	name="qtdItem" />
+															</div>
+														</div>
+													</div>
+													<div class="col-md-4">
+														<div class="form-group">
+															<label class="control-label" for="qtdItem">&nbsp</label>
+															<input type="zoom" class="form-control" id="zoomCentroCusto"
+																name="zoomCentroCusto" placeholder="Centro de Custos"
+																data-zoom="{
+																	'displayKey': 'CAMPO_ZOOM',
+																	'datasetId': 'ds_cdig_centro_custo',
+																	'placeholder':'Escolha Centro de Custo',
+																	'filterValues': '',
+																	'fields': [
+																	   {
+																	   'field': 'NOME',
+																	   'label': 'Filial',	
+																	   'standard': 'true',					       
+																	   'search': 'true'
+																		}
+																	 ]
+														   }" value="" />
+														</div>
+														<!-- HARDCODE -->
+														<input type="hidden" name="tpmCentroCustoItem"
+															id="tpmCentroCustoItem" value="0010" />
+													</div>
+													<div class="col-md-2" style="margin-top:22px !important;">
+														<button class="btn btn-primary" id="btnItem"
+															onclick="addItemSolicitacao()"><i
+																class="fluigicon fluigicon-add-test icon-sm"
+																aria-hidden="true"></i>
+															Adicionar</button>
+													</div>
+												</div>
+											</div>
+
+										</fieldset>
+									</div>
+									<div class="row">
+										<div class="col-md-12 table-responsive">
+											<table class="table table-sm" tablename="tabelaItens" id="tabelaItens"
+												noaddbutton="true" nodeletebutton="true">
+												<thead>
+													<tr>
+														<th>#</th>
+														<th>COD_ITEM</th>
+														<th>ITEM</th>
+														<th>DESCRIÇÃO</th>
+														<th>UN.MEDIDA</th>
+														<th>QUANTIDADE</th>
+														<th>CENTRO DE CUSTO</th>
+														<th>ÚLTIMO PREÇO</th>
+														<th>DTA.ÚLTIMA COMPRA</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>
+															<div class="fs-font-bold fs-md-margin-bottom count"
+																style="display: none"></div>
+															<div class="lixeiraSC">
+																<span
+																	class="fluigicon fluigicon-trash icon-sm fs-xs-padding fs-cursor-pointer fs-color-danger"
+																	title="Remover"
+																	onclick="removeItemSolicitacao(this)"></span>
+															</div>
+														</td>
+														<td>
+															<input type="text" name="cod_item" id="cod_item">
+														</td>
+														<td>
+															<input type="text" name="item" id="item">
+														</td>
+														<td>
+															<input type="text" name="descricao" id="descricao">
+														</td>
+														<td>
+															<input type="text" name="unidade_medida"
+																id="unidade_medida">
+														</td>
+														<td>
+															<input type="text" name="quantidade" id="quantidade">
+														</td>
+														<td>
+															<input type="text" name="centroCustoItem"
+																id="centroCustoItem">
+														</td>
+														<td>
+															<input type="text" name="ultimo_preco" id="ultimo_preco">
+														</td>
+														<td>
+															<input type="text" name="dt_ultima_compra"
+																id="dt_ultima_compra">
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<div class="row" id="section-itens">
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- ANEXOS -->
+						<div class="panel customPanel" id="anexosSolicitacao">
+							<div class="panel-heading">
+								<h4 class="panel-title titulo-panel">
+									<a class="collapse-icon up labelPanelTitle" data-toggle="collapse" data-parent="#accordion"
+										href="#anexos">
+										<span class="flaticon flaticon-paperclip icon-sm" aria-hidden="true"></span>
+										Documentos Anexos
+									</a>
+								</h4>
+							</div>
+							<div id="anexos" class="panel-collapse collapse in">
+								<div class="panel-body fs-md-padding-bottom">
+									<div class="row">
+										<div class="col-md-12">
+											<button class="btn btn-primary lixeiraForn" id="btnAddAnexo"
+												onclick="adicionarAnexo()"><i
+													class="flaticon flaticon-paperclip icon-sm"
+													aria-hidden="true"></i>Adicionar Anexo</button>
+											<br><br>
+											<table class="table table-bordered" tablename="tabelaAnexos"
+												id="tabelaAnexos" noaddbutton="true" nodeletebutton="true">
+												<thead>
+													<tr style="border: 1px solid #dddddd;">
+														<td></td>
+														<td style="font-size: 11px; font-weight: bold;">Documento</td>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td class="fs-v-align-middle fs-text-center fs-no-padding col-md-1"
+															style="width: 35px">
+															<div class="lixeiraForn">
+																<i class="fluigicon fluigicon-trash icon-sm fs-xs-padding fs-cursor-pointer fs-color-danger"
+																	title="Remover" onclick="removerAnexo(this)"></i>
+															</div>
+														</td>
+
+														<td class="fs-no-padding">
+															<div class="row"
+																style="padding-left: 15px; padding-top: 15px;">
+																<div class="col-md-6">
+																	<div class="form-group">
+																		<div class="input-group">
+																			<span class="input-group-addon">
+																				<span
+																					class="fluigicon fluigicon-paperclip"></span>
+																			</span>
+																			<input type="text" id="anexoDocumento"
+																				name="anexoDocumento"
+																				class="form-control anexo"
+																				placeholder="Selecione um arquivo"
+																				readonly="readonly">
+																			<input type="hidden"
+																				class="nomeArquivoDocumento"
+																				id="nomeArquivoDocumento"
+																				name="nomeArquivoDocumento" />
+																			<input type="hidden" class="idDocumento"
+																				id="idDocumento" name="idDocumento" />
+																		</div>
+																	</div>
+																</div>
+																<div class="form-group" style="margin-top: 7px">
+																	<input id="btnAnexoDocumento"
+																		name="btnAnexoDocumento"
+																		class="button-anexo anexoDesktop" value=""
+																		title="Clique aqui para selecionar um arquivo"
+																		onclick="showCameraCustom(this.id, 'Documento', true);"
+																		type="submit" readonly>
+																	<input id="btnDownloadDocumento"
+																		name="btnDownloadDocumento"
+																		class="button-download" value=""
+																		title="Download do Arquivo"
+																		onclick="downloadAnexo(this.id, 'Documento', true);"
+																		type="submit">
+																	<input id="btnViewerDocumento"
+																		name="btnViewerDocumento" class="button-viewer"
+																		value="" title="Visualizar Arquivo"
+																		onclick="viewerAnexo(this.id, 'Documento', true);"
+																		type="submit">
+																	<input id="btnLimparAnexoDocumento"
+																		name="btnLimparAnexoDocumento"
+																		class="button-clean" value=""
+																		title="Remover Arquivo"
+																		onclick="cleanAnexo(this.id, 'Documento', true);"
+																		type="submit" style="display: none">
+																</div>
+															</div>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- APROVAÇÂO GESTOR -->
+
+						<div class="panel customPanel" id="aprovacaoGestor">
+							<div class="panel-heading">
+								<h4 class="panel-title titulo-panel">
+									<a class="collapse-icon up labelPanelTitle" data-toggle="collapse" data-parent="#accordion"
+										href="#gestor-imediato">
+										<span class="flaticon flaticon-playlist-add-check icon-sm"
+											aria-hidden="true"></span>
+										Aprovação do Gestor
+									</a>
+								</h4>
+							</div>
+							<div id="gestor-imediato" class="panel-collapse collapse in">
+								<div class="panel-body fs-md-padding-bottom">
+									<div class="row">
+										<div class="col-md-8 col-sm-8">
+											<div class="form-group">
+												<label class="control-label" for="gestorImediatoNome">Aprovador</label>
+												<div class="input-group">
+													<input type="hidden" id="gestorImediatoMat"
+														name="gestorImediatoMat" />
+													<input type="text" class="form-control" id="gestorImediatoNome"
+														name="gestorImediatoNome" />
+													<span class="input-group-addon">
+														<span class="fluigicon fluigicon-user"></span>
+													</span>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-2 col-sm-2">
+											<div class="form-group">
+												<label class="control-label" for="gestorImediatoData">Data</label>
+												<div class="input-group">
+													<input type="text" class="form-control" id="gestorImediatoData"
+														name="gestorImediatoData" />
+													<span class="input-group-addon">
+														<span class="fluigicon fluigicon-calendar"></span>
+													</span>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-2 col-sm-2">
+											<div class="form-group">
+												<label class="control-label" for="gestorImediatoHora">Hora</label>
+												<div class="input-group">
+													<input type="text" class="form-control" id="gestorImediatoHora"
+														name="gestorImediatoHora" />
+													<span class="input-group-addon">
+														<span class="fluigicon fluigicon-time"></span>
+													</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-2 col-sm-2">
+											<div class="form-group">
+												<label class="control-label fs-sm-margin-bottom">Decisão</label>
+
+												<div class="custom-radio custom-radio-primary  fs-xs-margin-bottom">
+													<input type="radio" name="gestorImediatoDecisao"
+														id="gestorImediatoOpAprov" value="aprovado">
+													<label for="gestorImediatoOpAprov">Aprovado</label>
+												</div>
+
+												<div class="custom-radio custom-radio-primary ">
+													<input type="radio" name="gestorImediatoDecisao"
+														id="gestorImediatoOpReprov" value="reprovado">
+													<label for="gestorImediatoOpReprov">Reprovado</label>
+												</div>
+
+												<div class="custom-radio custom-radio-primary ">
+													<input type="radio" name="gestorImediatoDecisao"
+														id="gestorImediatoOpAjustar" value="ajustar">
+													<label for="gestorImediatoOpAjustar">Ajustar</label>
+												</div>
+
+											</div>
+										</div>
+										<div class="col-md-10 col-sm-10">
+											<div class="form-group">
+												<label class="control-label"
+													for="gestorImediatoJust">Justificativa</label>
+												<textarea class="form-control" name="gestorImediatoJust"
+													id="gestorImediatoJust" rows="3" readonly></textarea>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- ANALISE DE COMPRAS  -->
+
+						<!-- <div class="panel customPanel" id="analiseCompra">
+							<div class="panel-heading">
+								<h4 class="panel-title titulo-panel">
+									<a class="collapse-icon up" data-toggle="collapse" data-parent="#accordion" href="#responsavel-compras">
+										<span class="flaticon flaticon-search-form icon-md" aria-hidden="true"></span>
+										Compras
+									</a>
+								</h4>
+							</div>
+							<div id="responsavel-compras" class="panel-collapse collapse in">
+								<div class="panel-body fs-md-padding-bottom">
+									<div class="row">
+										<div class="col-md-8 col-sm-8">
+											<div class="form-group">
+												<label class="control-label" for="respComprasNome">Responsável Compras</label>
+												<div class="input-group">
+													<input type="hidden" id="respComprasMat" name="respComprasMat" />
+													<input type="text" class="form-control" id="respComprasNome" name="respComprasNome" />
+													<span class="input-group-addon">
+														<span class="fluigicon fluigicon-user"></span>
+													</span>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-2 col-sm-2">
+											<div class="form-group">
+												<label class="control-label" for="respComprasData">Data</label> 
+												<div class="input-group">
+													<input type="text" class="form-control" id="respComprasData" name="respComprasData" />
+													<span class="input-group-addon">
+														<span class="fluigicon fluigicon-calendar"></span>
+													</span>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-2 col-sm-2">
+											<div class="form-group">
+												<label class="control-label" for="respComprasHora">Hora</label> 
+												<div class="input-group">
+													<input type="text" class="form-control" id="respComprasHora" name="respComprasHora" />
+													<span class="input-group-addon">
+														<span class="fluigicon fluigicon-time"></span>
+													</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-2 col-sm-2">
+											<div class="form-group">
+												<label class="control-label fs-sm-margin-bottom">Complementar Requisição</label> 
+												
+												<div class="custom-radio custom-radio-primary  fs-xs-margin-bottom">
+												    <input type="radio" name="respComprasComplSolic" id="respComprasComplSolicOpSim" value="sim">
+												    <label for="respComprasComplSolicOpSim">Sim</label>
+												</div>
+												
+												<div class="custom-radio custom-radio-primary ">
+												    <input type="radio" name="respComprasComplSolic" id="respComprasComplSolicOpNao" value="nao">
+												    <label for="respComprasComplSolicOpNao">Não</label>
+												</div>
+				
+											</div>
+										</div>
+										<div class="col-md-2 col-sm-2" id="pularCotacao">
+											<div class="form-group">
+												<label class="control-label fs-sm-margin-bottom">Pular etapa de cotação?</label> 
+												
+												<div class="custom-radio custom-radio-primary  fs-xs-margin-bottom">
+												    <input type="radio" name="respComprasPularCot" id="respComprasPularCotOpSim" value="sim">
+												    <label for="respComprasPularCotOpSim">Sim</label>
+												</div>
+												
+												<div class="custom-radio custom-radio-primary ">
+												    <input type="radio" name="respComprasPularCot" id="respComprasPularCotOpNao" value="nao">
+												    <label for="respComprasPularCotOpNao">Não</label>
+												</div>
+				
+											</div>
+										</div>
+										<div class="col-md-8 col-sm-8">
+											<div class="form-group">
+												<label class="control-label" for="respComprasObs">Observação</label> 
+												<textarea class="form-control" name="respComprasObs" id="respComprasObs" rows="2" readonly></textarea>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div> -->
+
+						<!-- Integrações -->
+
+						<div class="panel customPanel" id="integracaoSistema">
+							<div class="panel-heading">
+								<h4 class="panel-title titulo-panel">
+									<a class="collapse-icon up labelPanelTitle" data-toggle="collapse" data-parent="#accordion"
+										href="#integracao">
+										<span class="flaticon flaticon-system-tools icon-sm" aria-hidden="true"></span>
+										Integrações
+									</a>
+								</h4>
+							</div>
+							<div id="integracao" class="panel-collapse collapse">
+								<div class="panel-body fs-md-padding-bottom">
+									<div' class="row">
+										<div class="col-md-12">
+											<div class="form-group">
+												<label class="control-label fs-sm-margin-bottom">Status</label>
+												<select class="form-control" id="statusIntegracao"
+													name="statusIntegracao">
+													<option value="ok">Ok</option>
+													<option value="error">Error</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-md-12">
+											<div class="form-group">
+												<label class="control-label fs-sm-margin-bottom">Erro Mensagem</label>
+												<input type="text" class="form-control input-sm" id="erroMgsIntegracao"
+													name="erroMgsIntegracao" />
+											</div>
+										</div>
+								</div>
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+			<footer id="process-footer"></footer>
+		</form>
+	</div>
+</body>
+
+</html>

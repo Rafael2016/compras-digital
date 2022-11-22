@@ -1,0 +1,30 @@
+input.label-custom {
+	background: none !important;
+	border: none !important;
+	padding: 0px !important;
+	font-weight: normal !important;
+	width: 100%;
+}
+
+th, td {
+   font-size: 12px !important;
+    border:1px solid #ccc;
+}
+
+.headerTableCotacao {
+	font-size: 12px !important;
+	background-color: #eee !important;
+	text-align: center !important;
+	padding: 5px !important;
+}
+
+.subHeaderTableCotacao {
+	font-size: 12px !important;
+	text-align: center !important;
+	padding: 5px !important;
+}
+
+.itemTableCotacao {
+	font-size: 12px !important;
+	padding: 5px !important;
+}

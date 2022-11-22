@@ -1,0 +1,81 @@
+<html>
+
+<head>
+	<link type="text/css" rel="stylesheet" href="/style-guide/css/fluig-style-guide.min.css" />
+	<script type="text/javascript" src="/portal/resources/js/jquery/jquery.js"></script>
+	<script type="text/javascript" src="/portal/resources/js/jquery/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/portal/resources/js/mustache/mustache-min.js"></script>
+	<script type="text/javascript" src="/style-guide/js/fluig-style-guide.min.js" charset="utf-8"></script>
+</head>
+
+<body>
+	<div class="fluig-style-guide">
+		<form name="form" role="form">
+
+			<div class="panel panel-default" id="panel_Datasul">
+				<div class="panel-heading ">
+					<h3 class="panel-title">
+						<span class="flaticon flaticon-process-settings icon-md" aria-hidden="true"></span>
+						Compras Digital - Configuração e Parametrização
+					</h3>
+				</div>
+				<div class="panel-body">
+				
+					<ul class="nav nav-tabs" role="tablist" id="listTab">
+						<li name="protheus" id="protheus" ><a href="#protheus"
+								role="tab" data-toggle="tab">Protheus</a></li>
+						<li name="rm" id="rm"><a href="#rm" role="tab"
+								data-toggle="tab">RM</a></li>
+						<li name="ged" id="ged" class="active"><a href="#ged" role="tab"
+								data-toggle="tab">GED - Fluig</a></li>
+					</ul>
+
+
+					<div class="tab-content fs-no-margin fs-no-padding">
+						<div class="tab-pane fade" id="protheus">
+							<div class="panel-body">
+								<div class="row">
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="rm">
+							<div class="panel-body">
+								<div class="row">
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane fade active in" id="ged">
+							<div class="panel-body">
+								<div class="row">
+
+									<div class="col-md-2">
+										<div class="form-group">
+											<label class="control-label">Pasta Formulário Fluxos</label>
+											<input type="text" class="form-control" id="idPastaForm" name="idPastaForm" />
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-group">
+											<label class="control-label">Pasta Salvar Anexos/Arquivos</label>
+											<input type="text" class="form-control" id="idPastaAnexos" name="idPastaAnexos" />
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-group">
+											<label class="control-label">Taxonomia GED</label>
+											<input type="text" class="form-control" id="taxonomiaGED" name="taxonomiaGED" />
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</form>
+	</div>
+</body>
+
+</html>

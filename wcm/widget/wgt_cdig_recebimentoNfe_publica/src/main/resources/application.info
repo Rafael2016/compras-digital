@@ -1,0 +1,24 @@
+application.type=widget
+application.code=wgt_cdig_recebimentoNfe_publica
+application.title=Recebimento Nota Fiscal  Fornecedor (Compra Digital)
+application.description=Widget Recebimento Nota Fiscal  Fornecedor (Compra Digital)
+application.category=SYSTEM
+application.renderer=freemarker
+developer.code=DESKTOP-NRIR1PL
+developer.name=User
+developer.url=http://www.fluig.com
+application.uiwidget=true
+application.mobileapp=false
+application.version=${build.version}-${build.revision}
+view.file=view.ftl
+edit.file=edit.ftl
+locale.file.base.name=wgt_cdig_recebimentoNfe_publica
+application.resource.css.1=/resources/css/wgt_cdig_recebimentoNfe_publica.css
+application.resource.js.2=/resources/js/library/axios.js
+application.resource.js.3=/resources/js/library/util.js
+application.resource.js.4=/resources/js/library/apiController.js
+application.resource.js.5=/resources/js/library/custom.js
+application.resource.js.6=/resources/js/wgt_cdig_recebimentoNfe_publica.js
+
+
+

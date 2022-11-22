@@ -1,0 +1,136 @@
+/* Coloque aqui seu codigo CSS */
+
+
+.text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.label-custom {
+	font-size: 12px;
+}
+
+.form-group-custom {
+	margin-bottom: 0px !important;
+}
+
+.form-group-resumo {
+	margin-bottom: 5px !important;
+}
+
+.form-control-custom {
+	background-color: #eeeeee !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+	font-size: 12px !important;
+	height: 29px !important;
+}
+
+th, td {
+   font-size: 12px !important;
+}
+
+.customCell {
+	font-size: 12px !important;
+	height: 32px !important;
+}
+
+.bs-callout {
+    margin: 20px 0;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+}
+
+.bs-callout-embracon {
+    border-left-color: rgba(160, 15, 22, 1) !important;
+}
+
+/* Vallide*/
+.message{
+    margin-top: 10px;
+}
+
+label.required:after{
+    color: #FF0000;
+    content: " *";
+}
+
+body {
+	background-color: #fff;
+}
+
+.header-vallide {
+	background-color: #eee;
+	position: relative;
+	margin-left: -15px;
+	margin-right: -15px;
+}
+
+.header-child-vallide {
+	padding:20px;
+	position: absolute;
+	top: 15%;
+}
+
+td.details-control {
+    background: url('../images/open-table-row.png') no-repeat center center;
+    cursor: pointer;
+}
+
+tr.details td.details-control {
+    background: url('../images/close-table-row.png') no-repeat center center;
+}
+
+.detail-content {
+	border: solid;
+    border-width: 1px;
+    border-radius: 5px;
+    padding: 10px;
+    border-style: dotted;
+}
+
+/**
+ *@TaBLE IMPOSTO
+ */
+
+ th.th-table-imposto
+{
+ /* margin-left: -85px;
+ position: absolute;
+ width: 215px; */
+ transform: rotate(-90deg);
+ -webkit-transform: rotate(-90deg); /* Safari/Chrome */
+ -moz-transform: rotate(-90deg); /* Firefox */
+ -o-transform: rotate(-90deg); /* Opera */
+ -ms-transform: rotate(-90deg); /* IE 9 */
+}
+
+table #table-imposto{
+    color: #7aa7c7;
+}
+
+.button-anexo{
+
+    background-color:#7aa7c7 !important ;
+    color: #FFFAFA !important;
+    font-size: 14px !important;
+    font-weight: 450 !important;
+    font-family: 'Open Sans' !important;
+}
+
+.section-custom-xlp{
+    margin-bottom: 2% !important;
+}
+
+/* REMOVE BORDAS TABLE  */
+.inputTable{
+    border-style: none !important;
+}
+
+.inputTable:focus{
+    border-style: none !important;
+}
